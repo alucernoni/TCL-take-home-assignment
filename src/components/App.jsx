@@ -95,14 +95,15 @@ export function App() {
 	const artList = searchResults.map((piece) => {
 		return (
 			<>
-				<ul>
-					<button
-						key={piece.id}
-						style={{ backgroundColor: 'transparent', border: 'none' }}
-						onClick={() => handleClick(piece)}
-					>
-						{piece.title} by {piece.artist_title}
-					</button>
+				<ul style={{ listStyleType: 'none' }}>
+					<li key={piece.image_id}>
+						<button
+							style={{ backgroundColor: 'transparent', border: 'none' }}
+							onClick={() => handleClick(piece)}
+						>
+							{piece.title} by {piece.artist_title}
+						</button>
+					</li>
 				</ul>
 			</>
 		);
