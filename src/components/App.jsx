@@ -2,12 +2,14 @@ import { useState } from 'react';
 
 import { searchArtworks } from '../api';
 import { SearchForm } from './SearchForm';
+import { ImageDetailsPage } from './ImageDetailsPage';
 import { Footer } from './Footer';
 
 import './App.css';
 
 export function App() {
 	const [searchResults, setSearchResults] = useState([]);
+	const [isSelected, setIsSelected] = useState(false);
 
 	function onSearchSubmit(query) {
 		// Search for the users's query.
@@ -20,55 +22,41 @@ export function App() {
 		searchArtworks(query).then((json) => {
 			setSearchResults(json.data);
 		});
+	}
 
-		// return resultArray;
-
-		// const searchResults = searchArtworks(query).then((json) => {
-		// 	if (json.data) {
-		// 		json().then((json) => {
-		// 			json.data.map((piece) => {
-		// 				return (
-		// 					<ul>
-		// 						<li>{piece.title} by {piece.artist_title}</li>
-		// 					</ul>
-		// 				)
-		// 			})
-		// 		})
-		// 	}
-		// 	console.log("search results", searchResults)
-		// })
-
-		// const searchResults = searchArtworks(query).then((json) => {
-		// 	console.log(json.data);
-
-		// 	json.data?.map((piece) => {
-		// 		return (
-		// 			<ul>
-		// 				<li>{piece.title} by {piece.artist_title}</li>
-		// 			</ul>
-		// 		)
-		// 	})
-		// });
-		// console.log("search results", searchResults)
-		// return searchResults
+	function handleClick(piece) {
+		setIsSelected(true);
 	}
 
 	const artList = searchResults.map((piece) => {
 		return (
-			<ul>
-				<li>
-					{piece.title} by {piece.artist_title}
-				</li>
-			</ul>
+			<>
+				<ul>
+					<button key={piece.id} onClick={() => handleClick(piece)}>
+						{piece.title} by {piece.artist_title}
+					</button>
+				</ul>
+			</>
 		);
 	});
 
-	return (
-		<div className="App">
-			<h1>TCL Career Lab Art Finder</h1>
-			<SearchForm onSearchSubmit={onSearchSubmit} />
-			{artList}
-			<Footer />
-		</div>
-	);
+	if (isSelected === false) {
+		return (
+			<div className="App">
+				<h1>TCL Career Lab Art Finder</h1>
+				<SearchForm onSearchSubmit={onSearchSubmit} />
+				{artList}
+				<Footer />
+			</div>
+		);
+	} else {
+		return (
+			<div className="App">
+				<h1>TCL Career Lab Art Finder</h1>
+				<SearchForm onSearchSubmit={onSearchSubmit} />
+				<ImageDetailsPage />
+				<Footer />
+			</div>
+		);
+	}
 }
